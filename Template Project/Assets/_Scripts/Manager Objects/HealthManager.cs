@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
 
-public class HealthManager : MonoBehaviour
+[System.Serializable]
+public class HealthManager
 {
     #region Private Properties
 #pragma warning disable CS0649
@@ -40,24 +41,6 @@ public class HealthManager : MonoBehaviour
         get { return _maxHealth; }
     }
     #endregion
-
-    // Awake is called before Start
-    private void Awake()
-	{
-		
-	}
-
-    // Start is called before the first frame update
-    private void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-
-    }
 
     /// <summary>
     /// Set the health values of the HealthManager to the specified initial values.
