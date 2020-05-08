@@ -24,7 +24,7 @@ namespace Utilities
         /// <param name="script">The script object invoking the singleton attempt.</param>
         /// <param name="instance">The Type class' static instance variable.</param>
         /// <param name="gameObject">The GameObject on which the calling script resides.</param>
-        public static void SetAsStaticInstance<Type>(Type script, ref Type instance, GameObject gameObject)
+        public static void SetAsStaticInstance(Type script, ref Type instance, GameObject gameObject)
         {
             // Checks to see if this class already has a defined static instance
             if (instance == null)
@@ -55,7 +55,7 @@ namespace Utilities
         /// <typeparam name="Type">The class you are attempting to set a singleton instance of.</typeparam>
         /// <param name="script">The script object invoking the singleton attempt.</param>
         /// <param name="instance">The Type class' static instance variable.</param>
-        public static void SetAsStaticInstance<Type>(Type script, ref Type instance)
+        public static void SetAsStaticInstance(Type script, ref Type instance)
         {
             // Checks to see if this class already has a defined static instance
             if (instance == null)

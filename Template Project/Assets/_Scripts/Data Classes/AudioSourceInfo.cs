@@ -1,4 +1,6 @@
 ﻿using System;
+using Enums;
+using Managers;
 using UnityEngine;
 
 namespace DataClasses
@@ -11,7 +13,7 @@ namespace DataClasses
 
 #pragma warning disable CS0649
         [Tooltip("The type of audio clip this is."), 
-            SerializeField] private Enums.AudioType _sourceType = Enums.AudioType.None;
+            SerializeField] private AudioSourceType _sourceType = AudioSourceType.None;
 
         [Tooltip("The name of this audio source. (Must be a unique name.)"),
             SerializeField] private string _sourceName;
@@ -19,34 +21,6 @@ namespace DataClasses
         [Tooltip("The audio source containing the clip to be used."),
             SerializeField] private AudioSource _clipSource;
 #pragma warning restore CS0649
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// The type of audio clip this is.
-        /// </summary>
-        public Enums.AudioType SourceType
-        {
-            get { return _sourceType; }
-        }
-
-        /// <summary>
-        /// The name of this audio clip. (Must be a unique name.)
-        /// </summary>
-        public string SourceName
-        {
-            get { return _sourceName; }
-        }
-
-        /// <summary>
-        /// The audio source containing the clip to be used.
-        /// </summary>
-        public AudioSource ClipSource
-        {
-            get { return _clipSource; }
-        }
 
         #endregion
 
@@ -68,6 +42,37 @@ namespace DataClasses
                 {
                     throw new NullReferenceException($"{_clipSource.name} does not have an audio clip assigned to it!");
                 }
+            }
+        }
+
+        // Start is called before the first frame update
+        private void Start()
+        {
+            // Registers the audio source with the audio manager
+            AudioManager.Instance.RegisterAudioSource(_clipSource, _sourceName, _sourceType, ChangeVolume);
+            // Adjusts the volume levels of the audio source to the game's current volume settings
+            ChangeVolume();
+        }
+
+        /// <summary>
+        /// Changes the volume of this audio source.
+        /// </summary>
+        private void ChangeVolume()
+        {
+            switch (_sourceType)
+            {
+                case AudioSourceType.Music:
+                    _clipSource.volume = AudioManager.Instance.MasterVolume * AudioManager.Instance.MusicVolume;
+                    break;
+                case AudioSourceType.SFX:
+                    _clipSource.volume = AudioManager.Instance.MasterVolume * AudioManager.Instance.SfxVolume;
+                    break;
+                case AudioSourceType.Ambiance:
+                    _clipSource.volume = AudioManager.Instance.MasterVolume * AudioManager.Instance.AmbianceVolume;
+                    break;
+                case AudioSourceType.Voice:
+                    _clipSource.volume = AudioManager.Instance.MasterVolume * AudioManager.Instance.VoiceVolume;
+                    break;
             }
         }
     }
