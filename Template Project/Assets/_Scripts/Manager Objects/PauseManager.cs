@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Utilities;
 
 namespace Managers
@@ -11,6 +12,9 @@ namespace Managers
 
 #pragma warning disable CS0649
         private static PauseManager _instance; // Global reference for the main PauseManager object
+
+        [SerializeField] private UnityEvent _gamePaused = new UnityEvent();
+        [SerializeField] private UnityEvent _gameUnpaused = new UnityEvent();
 #pragma warning restore CS0649
 
         #endregion
@@ -44,6 +48,72 @@ namespace Managers
         private void Update()
         {
 
+        }
+
+        /// <summary>
+        /// Adds one or more listeners to the OnPause event.
+        /// </summary>
+        /// <param name="calls">The names of the functions to call when OnPause is invoked.</param>
+        public void AddOnGamePauseListener(params UnityAction[] calls)
+        {
+            foreach (UnityAction call in calls)
+            {
+                Events.AddListener(_gamePaused, calls);
+            }
+        }
+
+        /// <summary>
+        /// Removes one or more listeners from the OnPause event.
+        /// </summary>
+        /// <param name="calls">The names of the functions to remove from the OnPause invoke array.</param>
+        public void RemoveOnGamePauseListener(params UnityAction[] calls)
+        {
+            foreach (UnityAction call in calls)
+            {
+                Events.RemoveListener(_gamePaused, calls);
+            }
+        }
+
+        /// <summary>
+        /// Adds one or more listeners to the OnUnpause event.
+        /// </summary>
+        /// <param name="calls">The names of the functions to call when OnUnpause is invoked.</param>
+        public void AddOnGameUnpauseListener(params UnityAction[] calls)
+        {
+            foreach (UnityAction call in calls)
+            {
+                Events.AddListener(_gameUnpaused, calls);
+            }
+        }
+
+        /// <summary>
+        /// Removes one or more listeners from the OnUnpause event.
+        /// </summary>
+        /// <param name="calls">The names of the functions to remove from the OnUnpause invoke array.</param>
+        public void RemoveOnGameUnpauseListener(params UnityAction[] calls)
+        {
+            foreach (UnityAction call in calls)
+            {
+                Events.RemoveListener(_gameUnpaused, calls);
+            }
+        }
+
+        /// <summary>
+        /// Pauses the game.
+        /// </summary>
+        public void PauseGame()
+        {
+            Time.timeScale = 0;
+            _gamePaused.Invoke();
+        }
+
+        /// <summary>
+        /// Unpauses the game.
+        /// </summary>
+        public void UnpauseGame()
+        {
+            Time.timeScale = 1;
+            _gameUnpaused.Invoke();
         }
     }
 }
