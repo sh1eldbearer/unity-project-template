@@ -1,4 +1,5 @@
-﻿using UnityEditor.Events;
+﻿using JetBrains.Annotations;
+using UnityEditor.Events;
 using UnityEngine.Events;
 
 namespace Utilities
@@ -13,7 +14,7 @@ namespace Utilities
         /// </summary>
         /// <param name="eventToUse">The event to add the listener to.</param>
         /// <param name="actions">The function(s) to add as a listener to the event.</param>
-        public static void AddContextualListener(UnityEvent eventToUse, params UnityAction[] actions)
+        public static void AddListener(UnityEvent eventToUse, [NotNull] params UnityAction[] actions)
         {
             foreach (UnityAction actionToUse in actions)
             { 
@@ -21,6 +22,24 @@ namespace Utilities
                     UnityEventTools.AddPersistentListener(eventToUse, actionToUse);
                 #else
                     eventToUse.AddListener(actionToUse);
+                #endif
+            }
+        }
+
+        /// <summary>
+        /// Removes a listener to the provided UnityEvent. The type of listener removed changes based on
+        /// whether the code is running in the Unity Editor or not.
+        /// </summary>
+        /// <param name="eventToUse">The event to add the listener to.</param>
+        /// <param name="actions">The function(s) to add as a listener to the event.</param>
+        public static void RemoveListener(UnityEvent eventToUse, [NotNull] params UnityAction[] actions)
+        {
+            foreach (UnityAction actionToUse in actions)
+            {
+                #if UNITY_EDITOR
+                    UnityEventTools.RemovePersistentListener(eventToUse, actionToUse);
+                #else
+                    eventToUse.RemoveListener(actionToUse);
                 #endif
             }
         }

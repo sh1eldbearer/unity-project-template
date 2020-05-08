@@ -118,7 +118,7 @@ namespace Managers
 
             // Registers events that cause audio sources of each type to adjust their clip volumes when the
             // master volume level is changed.
-            Events.AddContextualListener(_masterVolumeChanged, InvokeMusicVolumeChanged, InvokeSFXVolumeChanged,
+            Events.AddListener(_masterVolumeChanged, InvokeMusicVolumeChanged, InvokeSFXVolumeChanged,
                 InvokeAmbianceVolumeChanged, InvokeVoiceVolumeChanged);
         }
 
@@ -172,19 +172,19 @@ namespace Managers
                                                     $"and was not registered!");
                 case AudioSourceType.Music:
                     _musicSources.Add(sourceName, audioSource);
-                    Events.AddContextualListener(_musicVolumeChanged, changeVolumeFunction);
+                    Events.AddListener(_musicVolumeChanged, changeVolumeFunction);
                     break;
                 case AudioSourceType.SFX:
                     _sfxSources.Add(sourceName, audioSource);
-                    Events.AddContextualListener(_sfxVolumeChanged, changeVolumeFunction);
+                    Events.AddListener(_sfxVolumeChanged, changeVolumeFunction);
                     break;
                 case AudioSourceType.Ambiance:
                     _ambianceSources.Add(sourceName, audioSource);
-                    Events.AddContextualListener(_ambianceVolumeChanged, changeVolumeFunction);
+                    Events.AddListener(_ambianceVolumeChanged, changeVolumeFunction);
                     break;
                 case AudioSourceType.Voice:
                     _voiceSources.Add(sourceName, audioSource);
-                    Events.AddContextualListener(_voiceVolumeChanged, changeVolumeFunction);
+                    Events.AddListener(_voiceVolumeChanged, changeVolumeFunction);
                     break;
             }
         }
