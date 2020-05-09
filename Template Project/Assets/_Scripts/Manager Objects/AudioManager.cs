@@ -14,7 +14,7 @@ namespace Managers
         #region Private Properties
 
 #pragma warning disable CS0649
-        private static AudioManager _instance; // Global reference for the main AudioManager object
+        private static AudioManager _instance; // Static singleton instance of the AudioManager class
 
         [Header("Volume Settings")]
         [Tooltip("The overall volume level for the game. All other volumes will be multiplied by this " +
@@ -56,7 +56,7 @@ namespace Managers
         #region Public Properties
 
         /// <summary>
-        /// Global reference for the game's AudioManager object.
+        /// Static singleton instance of the AudioManager class.
         /// </summary>
         public static AudioManager Instance
         {

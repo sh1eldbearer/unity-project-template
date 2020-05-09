@@ -11,7 +11,7 @@ namespace Managers
         #region Private Properties
 
 #pragma warning disable CS0649
-        private static PauseManager _instance; // Global reference for the main PauseManager object
+        private static PauseManager _instance; // Static singleton instance of the PauseManager class
 
         [SerializeField] private UnityEvent _gamePaused = new UnityEvent();
         [SerializeField] private UnityEvent _gameUnpaused = new UnityEvent();
@@ -22,7 +22,7 @@ namespace Managers
         #region Public Properties
 
         /// <summary>
-        /// Global reference for the game's PauseManager object.
+        /// Static singleton instance of the PauseManager class.
         /// </summary>
         public static PauseManager Instance
         {

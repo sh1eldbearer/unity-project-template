@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using UnityEditor.Events;
+﻿using UnityEditor.Events;
 using UnityEngine.Events;
 
 namespace Utilities
@@ -14,7 +13,7 @@ namespace Utilities
         /// </summary>
         /// <param name="eventToUse">The event to add the listener to.</param>
         /// <param name="actions">The function(s) to add as a listener to the event.</param>
-        public static void AddListener(UnityEvent eventToUse, [NotNull] params UnityAction[] actions)
+        public static void AddListener(UnityEvent eventToUse, params UnityAction[] actions)
         {
             foreach (UnityAction actionToUse in actions)
             { 
@@ -32,7 +31,7 @@ namespace Utilities
         /// </summary>
         /// <param name="eventToUse">The event to add the listener to.</param>
         /// <param name="actions">The function(s) to add as a listener to the event.</param>
-        public static void RemoveListener(UnityEvent eventToUse, [NotNull] params UnityAction[] actions)
+        public static void RemoveListener(UnityEvent eventToUse, params UnityAction[] actions)
         {
             foreach (UnityAction actionToUse in actions)
             {

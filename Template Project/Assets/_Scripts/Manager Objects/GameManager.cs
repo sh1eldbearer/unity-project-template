@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
 
@@ -10,14 +8,14 @@ namespace Managers
         #region Private Properties
 
 #pragma warning disable CS0649
-        private static GameManager _instance; // Global reference for the main GameManager object
+        private static GameManager _instance; // Static singleton instance of the GameManager class
 #pragma warning restore CS0649
 
         #endregion
 
         #region Public Properties
         /// <summary>
-        /// Global reference for the game's GameManager object.
+        /// Static singleton instance of the GameManager class.
         /// </summary>
         public static GameManager Instance
         {
