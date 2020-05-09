@@ -43,3 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e7937bfdb586254b8f50d04ba9f43bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sceneTransitionFadeTime: 0.75
