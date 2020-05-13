@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Enums;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 using Utilities;
 
 namespace Managers
@@ -332,52 +333,102 @@ namespace Managers
                     $"No AudioSource by the name {clipName} was found in the voice dictionary.");
             }
         }
+        
+        /// <summary>
+        /// Sets the master volume level to a specified value between 0 (0%) and 1 (100%).
+        /// </summary>
+        /// <param name="newValue">The value to set the volume level to.</param>
+        public void SetMasterVolume(float newValue)
+        {
+            _masterVolume = Mathf.Clamp(newValue, 0f, 1f);
+            _masterVolumeChanged.Invoke();
+        }
 
         /// <summary>
-        /// Changes the master volume level.
+        /// Adjusts the master volume level up or down by the specified amount.
         /// </summary>
         /// <param name="changeAmt">The amount to change the volume by.</param>
-        public void ChangeMasterVolume(float changeAmt)
+        public void AdjustMasterVolumeBy(float changeAmt)
         {
             _masterVolume = Mathf.Clamp(_masterVolume + changeAmt, 0f, 1f);
             _masterVolumeChanged.Invoke();
         }
 
         /// <summary>
-        /// Changes the music volume level.
+        /// Sets the music volume level to a specified value between 0 (0%) and 1 (100%).
         /// </summary>
-        /// <param name="changeAmt">The amount to change the master volume by.</param>
-        public void ChangeMusicVolume(float changeAmt)
+        /// <param name="newValue">The value to set the volume level to.</param>
+        public void SetMusicVolume(float newValue)
+        {
+            _musicVolume = Mathf.Clamp(newValue, 0f, 1f);
+            _musicVolumeChanged.Invoke();
+        }
+
+        /// <summary>
+        /// Adjusts the music volume level up or down by the specified amount.
+        /// </summary>
+        /// <param name="changeAmt">The amount to change the music volume by.</param>
+        public void AdjustMusicVolumeBy(float changeAmt)
         {
             _musicVolume = Mathf.Clamp(_musicVolume + changeAmt, 0f, 1f);
             _musicVolumeChanged.Invoke();
         }
 
         /// <summary>
-        /// Changes the sound effects volume level.
+        /// Sets the sound effects volume level to a specified value between 0 (0%) and 1 (100%).
+        /// </summary>
+        /// <param name="newValue">The value to set the volume level to.</param>
+        public void SetSFXVolume(float newValue)
+        {
+            _sfxVolume = Mathf.Clamp(newValue, 0f, 1f);
+            _sfxVolumeChanged.Invoke();
+        }
+
+        /// <summary>
+        /// Adjusts the sound effects volume level up or down by the specified amount.
         /// </summary>
         /// <param name="changeAmt">The amount to change the sound effects volume by.</param>
-        public void ChangeSFXVolume(float changeAmt)
+        public void AdjustSFXVolumeBy(float changeAmt)
         {
             _sfxVolume = Mathf.Clamp(_sfxVolume + changeAmt, 0f, 1f);
             _sfxVolumeChanged.Invoke();
         }
 
         /// <summary>
-        /// Changes the ambiance volume level.
+        /// Sets the ambiance volume level to a specified value between 0 (0%) and 1 (100%).
+        /// </summary>
+        /// <param name="newValue">The value to set the volume level to.</param>
+        public void SetAmbianceVolume(float newValue)
+        {
+            _ambianceVolume = Mathf.Clamp(newValue, 0f, 1f);
+            _ambianceVolumeChanged.Invoke();
+        }
+
+        /// <summary>
+        /// Adjusts the ambiance volume level up or down by the specified amount.
         /// </summary>
         /// <param name="changeAmt">The amount to change the ambiance volume by.</param>
-        public void ChangeAmbianceVolume(float changeAmt)
+        public void AdjustAmbianceVolumeBy(float changeAmt)
         {
             _ambianceVolume = Mathf.Clamp(_ambianceVolume + changeAmt, 0f, 1f);
             _ambianceVolumeChanged.Invoke();
         }
 
         /// <summary>
-        /// Changes the voice volume level.
+        /// Sets the voice volume level to a specified value between 0 (0%) and 1 (100%).
+        /// </summary>
+        /// <param name="newValue">The value to set the volume level to.</param>
+        public void SetVoiceVolume(float newValue)
+        {
+            _voiceVolume = Mathf.Clamp(newValue, 0f, 1f);
+            _voiceVolumeChanged.Invoke();
+        }
+
+        /// <summary>
+        /// Adjusts the voice volume level up or down by the specified amount.
         /// </summary>
         /// <param name="changeAmt">The amount to change the voice volume by.</param>
-        public void ChangeVoiceVolume(float changeAmt)
+        public void AdjustVoiceVolumeBy(float changeAmt)
         {
             _voiceVolume = Mathf.Clamp(_voiceVolume + changeAmt, 0f, 1f);
             _voiceVolumeChanged.Invoke();
