@@ -11,7 +11,6 @@ namespace Managers
     [RequireComponent(typeof(AudioListener))]
     public class AudioManager : MonoBehaviour
     {
-        
         #region Private Properties
 
 #pragma warning disable CS0649
