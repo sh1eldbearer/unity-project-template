@@ -25,7 +25,7 @@ public abstract class MenuManager : MonoBehaviour
     protected virtual void Awake()
     {
         // Attempts to set this script as the static instance for this class
-        Singleton<MenuManager>.SetAsStaticInstance(this, ref _instance, this.gameObject);
+        Singleton<MenuManager>.SetAsStaticInstance(this, ref _instance, this.gameObject, true);
     }
 
     // Start is called before the first frame update
