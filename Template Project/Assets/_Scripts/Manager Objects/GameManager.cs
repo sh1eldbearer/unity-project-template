@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Utilities;
+using PlayerPrefs = Utilities.PlayerPrefs;
 
 namespace Managers
 {
@@ -14,6 +15,9 @@ namespace Managers
         [Tooltip("The length of time (in seconds) it will take a for the UI of a loading screen to change its alpha" +
                  "from fully transparent to fully opaque (or vice versa)."),
             SerializeField, Range(0.1f, 2f)] private float _sceneTransitionFadeTime;
+
+        [Header("PlayerPrefs Key Names")] 
+        [SerializeField] private Utilities.PlayerPrefs _playerPrefs;
 #pragma warning restore CS0649
 
         #endregion
@@ -34,6 +38,14 @@ namespace Managers
         public float SceneTransitionFadeTime
         {
             get { return _sceneTransitionFadeTime; }
+        }
+
+        /// <summary>
+        /// This game's PlayerPrefs utility object.
+        /// </summary>
+        public PlayerPrefs PlayerPrefs
+        {
+            get { return _playerPrefs; }
         }
 
         #endregion
