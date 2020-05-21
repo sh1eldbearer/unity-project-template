@@ -7,8 +7,6 @@ namespace Utilities
     public class PlayerPrefs 
     {
         #region Private Properties
-
-        [SerializeField] private bool test = true;
 #pragma warning disable CS0649
         [Header("Volume Key Names")]
         [Tooltip("Information about the master volume PlayerPrefs setting."),
