@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Enums;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
 using Utilities;
 
 namespace Managers
@@ -120,6 +119,34 @@ namespace Managers
             // master volume level is changed.
             Events.AddListener(_masterVolumeChanged, InvokeMusicVolumeChanged, InvokeSFXVolumeChanged,
                 InvokeAmbianceVolumeChanged, InvokeVoiceVolumeChanged);
+
+            // Get volume levels from PlayerPrefs, if they already have settings stored
+            if (GameManager.Instance.PlayerPrefs.MasterVolume.HasKey())
+            {
+                SetMasterVolume(GameManager.Instance.PlayerPrefs.MasterVolume.GetValue());
+            }
+
+            if (GameManager.Instance.PlayerPrefs.MusicVolume.HasKey())
+            {
+                SetMusicVolume(GameManager.Instance.PlayerPrefs.MusicVolume.GetValue());
+            }
+
+            if (GameManager.Instance.PlayerPrefs.SfxVolume.HasKey())
+            {
+                SetSFXVolume(GameManager.Instance.PlayerPrefs.SfxVolume.GetValue());
+            }
+
+            if (GameManager.Instance.PlayerPrefs.AmbianceVolume.HasKey())
+            {
+                SetAmbianceVolume(GameManager.Instance.PlayerPrefs.AmbianceVolume.GetValue());
+            }
+
+            if (GameManager.Instance.PlayerPrefs.VoiceVolume.HasKey())
+            {
+                SetVoiceVolume(GameManager.Instance.PlayerPrefs.VoiceVolume.GetValue());
+            }
+
+            _masterVolumeChanged.Invoke();
         }
 
         // Start is called before the first frame update
@@ -132,6 +159,15 @@ namespace Managers
         private void Update()
         {
 
+        }
+
+        private void OnApplicationQuit()
+        {
+            GameManager.Instance.PlayerPrefs.MasterVolume.SetValue(_masterVolume);
+            GameManager.Instance.PlayerPrefs.MusicVolume.SetValue(_musicVolume);
+            GameManager.Instance.PlayerPrefs.SfxVolume.SetValue(_sfxVolume);
+            GameManager.Instance.PlayerPrefs.AmbianceVolume.SetValue(_ambianceVolume);
+            GameManager.Instance.PlayerPrefs.VoiceVolume.SetValue(_voiceVolume);
         }
 
         /// <summary>
