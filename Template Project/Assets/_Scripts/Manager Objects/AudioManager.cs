@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Enums;
+using TypedEvents;
 using UnityEngine;
 using UnityEngine.Events;
 using Utilities;
@@ -42,12 +43,12 @@ namespace Managers
         // The dictionary of audio sources designated as voice clips. Allows sources to be looked up by name.
         private Dictionary<string, AudioSource> _voiceSources = new Dictionary<string, AudioSource>();
 
-        [Header("Volume Changed Events")] [SerializeField]
-        private UnityEvent _masterVolumeChanged;
-        [SerializeField] private UnityEvent _musicVolumeChanged;
-        [SerializeField] private UnityEvent _sfxVolumeChanged;
-        [SerializeField] private UnityEvent _ambianceVolumeChanged;
-        [SerializeField] private UnityEvent _voiceVolumeChanged;
+        [Header("Volume Changed Events")] 
+        [SerializeField] private UnityFloatEvent _masterVolumeChanged;
+        [SerializeField] private UnityFloatEvent _musicVolumeChanged;
+        [SerializeField] private UnityFloatEvent _sfxVolumeChanged;
+        [SerializeField] private UnityFloatEvent _ambianceVolumeChanged;
+        [SerializeField] private UnityFloatEvent _voiceVolumeChanged;
 #pragma warning restore CS0649
 
         #endregion
@@ -117,7 +118,7 @@ namespace Managers
 
             // Registers events that cause audio sources of each type to adjust their clip volumes when the
             // master volume level is changed.
-            Events.AddListener(_masterVolumeChanged, InvokeMusicVolumeChanged, InvokeSFXVolumeChanged,
+            Events.AddListener<float>(_masterVolumeChanged, InvokeMusicVolumeChanged, InvokeSFXVolumeChanged,
                 InvokeAmbianceVolumeChanged, InvokeVoiceVolumeChanged);
 
             // Get volume levels from PlayerPrefs, if they already have settings stored
@@ -146,21 +147,10 @@ namespace Managers
                 SetVoiceVolume(GameManager.Instance.PlayerPrefs.VoiceVolume.GetValue());
             }
 
-            _masterVolumeChanged.Invoke();
+            InvokeMasterVolumeChanged();
         }
 
-        // Start is called before the first frame update
-        private void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        private void Update()
-        {
-
-        }
-
+        // Sent to all game objects before the application is quit
         private void OnApplicationQuit()
         {
             GameManager.Instance.PlayerPrefs.MasterVolume.SetValue(_masterVolume);
@@ -171,35 +161,60 @@ namespace Managers
         }
 
         /// <summary>
-        /// Invokes the _musicVolumeChanged UnityEvent.
+        /// Invokes the MasterVolumeChanged UnityEvent.
         /// </summary>
-        private void InvokeMusicVolumeChanged()
+        /// <param name="value">An optional float parameter to pass to the functions listening for this
+        /// event. Will ignore values less than zero or greater than one. May be omitted.</param>
+        private void InvokeMasterVolumeChanged(float value = -1)
         {
-            _musicVolumeChanged.Invoke();
+            if (value < 0 || value > 1)
+            {
+                _masterVolumeChanged.Invoke(_masterVolume);
+            }
+            else
+            {
+                _masterVolumeChanged.Invoke(value);
+            }
         }
 
         /// <summary>
-        /// Invokes the _sfxVolumeChanged UnityEvent.
+        /// Invokes the MusicVolumeChanged UnityEvent.
         /// </summary>
-        private void InvokeSFXVolumeChanged()
+        /// <param name="value">An optional float parameter to pass to the functions listening for this
+        /// event. Will ignore values less than zero or greater than one. May be omitted.</param>
+        private void InvokeMusicVolumeChanged(float value = -1f)
         {
-            _sfxVolumeChanged.Invoke();
+            _musicVolumeChanged.Invoke(_musicVolume);
         }
 
         /// <summary>
-        /// Invokes the _ambianceVolumeChanged UnityEvent.
+        /// Invokes the SfxVolumeChanged UnityEvent.
         /// </summary>
-        private void InvokeAmbianceVolumeChanged()
+        /// <param name="value">An optional float parameter to pass to the functions listening for this
+        /// event. Will ignore values less than zero or greater than one. May be omitted.</param>
+        private void InvokeSFXVolumeChanged(float value = -1f)
         {
-            _ambianceVolumeChanged.Invoke();
+            _sfxVolumeChanged.Invoke(_sfxVolume);
         }
 
         /// <summary>
-        /// Invokes the _voiceVolumeChanged UnityEvent.
+        /// Invokes the AmbianceVolumeChanged UnityEvent.
         /// </summary>
-        private void InvokeVoiceVolumeChanged()
+        /// <param name="value">An optional float parameter to pass to the functions listening for this
+        /// event. Will ignore values less than zero or greater than one. May be omitted.</param>
+        private void InvokeAmbianceVolumeChanged(float value = -1f)
         {
-            _voiceVolumeChanged.Invoke();
+            _ambianceVolumeChanged.Invoke(_ambianceVolume);
+        }
+
+        /// <summary>
+        /// Invokes the VoiceVolumeChanged UnityEvent.
+        /// </summary>
+        /// <param name="value">An optional float parameter to pass to the functions listening for this
+        /// event. Will ignore values less than zero or greater than one. May be omitted.</param>
+        private void InvokeVoiceVolumeChanged(float value = -1f)
+        {
+            _voiceVolumeChanged.Invoke(_voiceVolume);
         }
 
         /// <summary>
@@ -210,7 +225,7 @@ namespace Managers
         /// <param name="sourceType">The type of AudioSource being registered.</param>
         /// <param name="changeVolumeFunction">The ChangeVolume function in the AudioSourceInfo </param>
         public void RegisterAudioSource(AudioSource audioSource, string sourceName, AudioSourceType sourceType,
-            UnityAction changeVolumeFunction)
+            UnityAction<float> changeVolumeFunction)
         {
             // Registers the AudioSource with the appropriate dictionary
             switch (sourceType)
@@ -376,7 +391,7 @@ namespace Managers
         public void SetMasterVolume(float newValue)
         {
             _masterVolume = Mathf.Clamp(newValue, 0f, 1f);
-            _masterVolumeChanged.Invoke();
+            InvokeMasterVolumeChanged();
         }
 
         /// <summary>
@@ -386,7 +401,7 @@ namespace Managers
         public void AdjustMasterVolumeBy(float changeAmt)
         {
             _masterVolume = Mathf.Clamp(_masterVolume + changeAmt, 0f, 1f);
-            _masterVolumeChanged.Invoke();
+            InvokeMasterVolumeChanged();
         }
 
         /// <summary>
@@ -396,7 +411,7 @@ namespace Managers
         public void SetMusicVolume(float newValue)
         {
             _musicVolume = Mathf.Clamp(newValue, 0f, 1f);
-            _musicVolumeChanged.Invoke();
+            InvokeMusicVolumeChanged();
         }
 
         /// <summary>
@@ -406,7 +421,7 @@ namespace Managers
         public void AdjustMusicVolumeBy(float changeAmt)
         {
             _musicVolume = Mathf.Clamp(_musicVolume + changeAmt, 0f, 1f);
-            _musicVolumeChanged.Invoke();
+            InvokeMusicVolumeChanged();
         }
 
         /// <summary>
@@ -416,7 +431,7 @@ namespace Managers
         public void SetSFXVolume(float newValue)
         {
             _sfxVolume = Mathf.Clamp(newValue, 0f, 1f);
-            _sfxVolumeChanged.Invoke();
+            InvokeSFXVolumeChanged();
         }
 
         /// <summary>
@@ -426,7 +441,7 @@ namespace Managers
         public void AdjustSFXVolumeBy(float changeAmt)
         {
             _sfxVolume = Mathf.Clamp(_sfxVolume + changeAmt, 0f, 1f);
-            _sfxVolumeChanged.Invoke();
+            InvokeSFXVolumeChanged();
         }
 
         /// <summary>
@@ -436,7 +451,7 @@ namespace Managers
         public void SetAmbianceVolume(float newValue)
         {
             _ambianceVolume = Mathf.Clamp(newValue, 0f, 1f);
-            _ambianceVolumeChanged.Invoke();
+            InvokeAmbianceVolumeChanged();
         }
 
         /// <summary>
@@ -446,7 +461,7 @@ namespace Managers
         public void AdjustAmbianceVolumeBy(float changeAmt)
         {
             _ambianceVolume = Mathf.Clamp(_ambianceVolume + changeAmt, 0f, 1f);
-            _ambianceVolumeChanged.Invoke();
+            InvokeAmbianceVolumeChanged();
         }
 
         /// <summary>
@@ -456,7 +471,7 @@ namespace Managers
         public void SetVoiceVolume(float newValue)
         {
             _voiceVolume = Mathf.Clamp(newValue, 0f, 1f);
-            _voiceVolumeChanged.Invoke();
+            InvokeVoiceVolumeChanged();
         }
 
         /// <summary>
@@ -466,7 +481,7 @@ namespace Managers
         public void AdjustVoiceVolumeBy(float changeAmt)
         {
             _voiceVolume = Mathf.Clamp(_voiceVolume + changeAmt, 0f, 1f);
-            _voiceVolumeChanged.Invoke();
+            InvokeVoiceVolumeChanged();
         }
     }
 }

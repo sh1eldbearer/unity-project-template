@@ -27,7 +27,6 @@ namespace DataClasses
 
         #endregion
 
-
         public abstract Type GetValue();
 
         public abstract void SetValue(Type value);

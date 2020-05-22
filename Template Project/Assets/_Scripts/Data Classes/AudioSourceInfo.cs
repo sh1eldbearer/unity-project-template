@@ -57,7 +57,9 @@ namespace DataClasses
         /// <summary>
         /// Changes the volume of this audio source.
         /// </summary>
-        private void ChangeVolume()
+        /// <param name="value">Optional parameter for AudioManager event complicity. Can be omitted;
+        /// value is ignored.</param>
+        private void ChangeVolume(float value = -1)
         {
             switch (_sourceType)
             {
