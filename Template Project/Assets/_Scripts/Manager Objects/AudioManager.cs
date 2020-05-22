@@ -400,7 +400,9 @@ namespace Managers
         /// <param name="changeAmt">The amount to change the volume by.</param>
         public void AdjustMasterVolumeBy(float changeAmt)
         {
-            _masterVolume = Mathf.Clamp(_masterVolume + changeAmt, 0f, 1f);
+            // Enforces rounding to two decimal places
+            int volume = (int)((_masterVolume + changeAmt) * 100);
+            _masterVolume = Mathf.Clamp((float)volume / 100, 0f, 1f);
             InvokeMasterVolumeChanged();
         }
 
@@ -420,7 +422,9 @@ namespace Managers
         /// <param name="changeAmt">The amount to change the music volume by.</param>
         public void AdjustMusicVolumeBy(float changeAmt)
         {
-            _musicVolume = Mathf.Clamp(_musicVolume + changeAmt, 0f, 1f);
+            // Enforces rounding to two decimal places
+            int volume = (int)((_musicVolume + changeAmt) * 100);
+            _musicVolume = Mathf.Clamp((float)volume / 100, 0f, 1f);
             InvokeMusicVolumeChanged();
         }
 
@@ -440,7 +444,9 @@ namespace Managers
         /// <param name="changeAmt">The amount to change the sound effects volume by.</param>
         public void AdjustSFXVolumeBy(float changeAmt)
         {
-            _sfxVolume = Mathf.Clamp(_sfxVolume + changeAmt, 0f, 1f);
+            // Enforces rounding to two decimal places
+            int volume = (int)((_sfxVolume + changeAmt) * 100);
+            _sfxVolume = Mathf.Clamp((float)volume / 100, 0f, 1f);
             InvokeSFXVolumeChanged();
         }
 
@@ -460,7 +466,9 @@ namespace Managers
         /// <param name="changeAmt">The amount to change the ambiance volume by.</param>
         public void AdjustAmbianceVolumeBy(float changeAmt)
         {
-            _ambianceVolume = Mathf.Clamp(_ambianceVolume + changeAmt, 0f, 1f);
+            // Enforces rounding to two decimal places
+            int volume = (int)((_ambianceVolume + changeAmt) * 100);
+            _ambianceVolume = Mathf.Clamp((float)volume / 100, 0f, 1f);
             InvokeAmbianceVolumeChanged();
         }
 
@@ -480,7 +488,9 @@ namespace Managers
         /// <param name="changeAmt">The amount to change the voice volume by.</param>
         public void AdjustVoiceVolumeBy(float changeAmt)
         {
-            _voiceVolume = Mathf.Clamp(_voiceVolume + changeAmt, 0f, 1f);
+            // Enforces rounding to two decimal places
+            int volume = (int)((_voiceVolume + changeAmt) * 100);
+            _voiceVolume = Mathf.Clamp((float)volume / 100, 0f, 1f);
             InvokeVoiceVolumeChanged();
         }
     }
